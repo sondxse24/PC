@@ -19,11 +19,11 @@ public class Payment {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "user")
+    @JoinColumn(name = "user_id")
     private Users user;
 
     @ManyToOne
-    @JoinColumn(name = "order")
+    @JoinColumn(name = "order_id")
     private Order order;
 
     @Column(name = "amount", nullable = false)

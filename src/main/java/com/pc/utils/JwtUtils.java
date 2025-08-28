@@ -1,9 +1,13 @@
 package com.pc.utils;
 
+import com.pc.enums.Role;
+import com.pc.model.Users;
+import com.pc.service.UserSer;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +20,10 @@ import java.util.Map;
 
 @Component
 public class JwtUtils {
+
+    @Autowired
+    private UserSer userSer;
+
     private final String SECRET;
     private final long EXPIRATION_TIME;
     private final long REFRESH_EXPIRATION_TIME;
@@ -45,7 +53,6 @@ public class JwtUtils {
 
     public String generateAccessToken(String email, List<String> roles, Map<String, Object> extraClaims) {
         Map<String, Object> claims = new HashMap<>(extraClaims);
-        claims.put("email", email);
         claims.put("roles", roles);
         return createToken(claims, email, EXPIRATION_TIME);
     }
@@ -69,5 +76,19 @@ public class JwtUtils {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public String extractSubject(String token) { // email/username
+        return extractAllClaims(token).getSubject();
+    }
+
+    public String extractJti(String token) {
+        return extractAllClaims(token).getId();
+    }
+
+    public Role getRoleByJwt(String token) {
+        Claims claims = extractAllClaims(token);
+        String role = claims.get("role", String.class);
+        return Role.valueOf(role);
     }
 }

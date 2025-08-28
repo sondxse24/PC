@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,9 +21,6 @@ public class Users {
     @Nationalized
     @Column(name = "name", nullable = false)
     private String name;
-
-    @Column(name = "username", nullable = false)
-    private String username;
 
     @Column(name = "password", nullable = false)
     private String password;
@@ -45,9 +42,8 @@ public class Users {
     @Column(name = "create_at", nullable = false)
     private LocalDateTime createAt;
 
-    public Users(String name, String username, String password, String phoneNumber, String email, String address, Role role, LocalDateTime createAt) {
+    public Users(String name, String password, String phoneNumber, String email, String address, Role role, LocalDateTime createAt) {
         this.name = name;
-        this.username = username;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.email = email;
